@@ -23,13 +23,13 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          region: ${{ secrets.AWS_REGION }}
+          region: eu-north-1  
 
       - name: Build and push Docker image
         id: build-image
         run: |
           # Get the ECR repository URI
-          REPOSITORY_URI=$(aws ecr describe-repositories --repository-names ${{ secrets.ECR_REPOSITORY }} --region ${{ secrets.AWS_REGION }} --query "repositories[0].repositoryUri" --output text)
+          REPOSITORY_URI=$(aws ecr describe-repositories --repository-names ${{ secrets.ECR_REPOSITORY }} --region eu-north-1 --query "repositories[0].repositoryUri" --output text)
 
           # Build the Docker image
           docker build -t $REPOSITORY_URI:latest .
@@ -39,5 +39,5 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION: eu-north-1  # Use the correct region here
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
